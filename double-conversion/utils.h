@@ -293,15 +293,13 @@ class StringBuilder {
   }
 
   // Finalize the string by 0-terminating it and returning the buffer.
-  char* Finalize() {
+  size_t Finalize() {
     DOUBLE_CONVERSION_ASSERT(!is_finalized() && position_ < buffer_.length());
-    buffer_[position_] = '\0';
-    // Make sure nobody managed to add a 0-character to the
-    // buffer while building the string.
-    DOUBLE_CONVERSION_ASSERT(strlen(buffer_.start()) == static_cast<size_t>(position_));
+    size_t len = position_;
+    buffer_[len] = '\0';
     position_ = -1;
     DOUBLE_CONVERSION_ASSERT(is_finalized());
-    return buffer_.start();
+    return len;
   }
 
  private:
